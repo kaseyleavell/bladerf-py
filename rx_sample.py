@@ -1,6 +1,7 @@
 from bladerf import _bladerf
 import numpy as np
 import sample
+import sys
 
 def main():
     print("Setting bladerf rx configuration")
@@ -35,7 +36,7 @@ def main():
                     num_transfers  = 8,
                     stream_timeout = 3500)
 
-    FILE="data.bin"
+    FILE='data.bin'
 
     s.rx_tx_capture()
     s.save(FILE)
