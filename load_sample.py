@@ -2,7 +2,7 @@ from sample_processor import Sample_Processor
 
 def main():
     print("Beginning data processing")
-    sp = Sample_Processor('data.data')
+    sp = Sample_Processor('data.bin')
     sp.test_read()
     sp.start_fft()
     sp.plot_spectrogram()

@@ -8,10 +8,16 @@ def main():
     sdr = _bladerf.BladeRF()
     rx_ch = sdr.Channel(_bladerf.CHANNEL_RX(0)) # give it a 0 or 1
 
-    sample_rate = 10e6
-    center_freq = 100e6
-    gain = 50 # -15 to 60 dB
-    num_samples = int(1e6)
+    if sys.argv:
+        sample_rate = eval(sys.argv[1])
+        center_freq = eval(sys.argv[2])
+        gain = eval(sys.argv[3])
+        num_samples = int(eval(sys.argv[4]))
+    else:
+        sample_rate = 10e6
+        center_freq = 100e6
+        gain = 50 # -15 to 60 dB
+        num_samples = int(1e6)
 
     rx_ch.frequency = center_freq
     rx_ch.sample_rate = sample_rate
@@ -29,8 +35,10 @@ def main():
                     num_transfers  = 8,
                     stream_timeout = 3500)
 
+    FILE="data.bin"
+
     s.rx_tx_capture()
-    s.save("data.data")
+    s.save(FILE)
     
 
 
