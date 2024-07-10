@@ -14,11 +14,6 @@ def main():
         center_freq = eval(sys.argv[2])
         gain = eval(sys.argv[3])
         num_samples = int(eval(sys.argv[4]))
-    else:
-        sample_rate = 10e6
-        center_freq = 100e6
-        gain = 50 # -15 to 60 dB
-        num_samples = int(1e6)
 
     rx_ch.frequency = center_freq
     rx_ch.sample_rate = sample_rate
