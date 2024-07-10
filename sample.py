@@ -40,7 +40,7 @@ class Sample():
         # Enable module
         print("Starting receive")
         # Initial call to print 0% progress
-        printProgressBar(0, l, prefix = 'Progress:', suffix = 'Complete', length = 50)
+        printProgressBar(0, self.num_samples, prefix = 'Progress:', suffix = 'Complete', length = 50)
         self.channel.enable = True
 
         # read rx data into buffer as the samples come in from radio
