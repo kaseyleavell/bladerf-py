@@ -2,6 +2,26 @@ from bladerf import _bladerf
 import numpy as np
 import pickle
 
+def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals in percent complete (Int)
+        length      - Optional  : character length of bar (Int)
+        fill        - Optional  : bar fill character (Str)
+        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
+    """
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
+    # Print New Line on Complete
+    if iteration == total: 
+        print()
 # Class that defines a sample array when a capture occurs
 class Sample():
     def __init__(self,sdr,channel,num_samples):
@@ -19,6 +39,8 @@ class Sample():
         num_samples_read = 0   
         # Enable module
         print("Starting receive")
+        # Initial call to print 0% progress
+        printProgressBar(0, l, prefix = 'Progress:', suffix = 'Complete', length = 50)
         self.channel.enable = True
 
         # read rx data into buffer as the samples come in from radio
@@ -30,6 +52,8 @@ class Sample():
                           self.num_samples - num_samples_read)
             else:
                 num = len(self.buf) // self.bytes_per_sample
+            # Update Progress Bar
+            printProgressBar(num_samples_read, self.num_samples, prefix = 'Progress:', suffix = 'Complete', length = 50)
             self.sdr.sync_rx(self.buf, num) # Read into buffer
             samples = np.frombuffer(self.buf, dtype=np.int16)
             samples = samples[0::2] + 1j * samples[1::2] # Convert to complex type
